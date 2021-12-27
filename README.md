@@ -18,7 +18,7 @@ The config file has a inet filter and a ip nat table setup.
 Additionally, the module comes with a basic infrastructure
 to hook into different places.
 
-## nftables config
+## Configuration
 
 The main configuration file loaded by the nftables service
 will be `files/config/puppet.nft`, all other files created
@@ -47,7 +47,14 @@ for all masterchains. This chain is empty by default.
 INPUT and OUTPUT to the loopback device is allowed by
 default, though you could restrict it later.
 
-### Rules Validation
+On the other hand, if you don't want any of the default tables, chains
+and rules created by the module, you can set `nftables::inet_filter`
+and/or `nftables::nat` to `false` and build your whole nftables
+configuration from scratch by using the building blocks provided by
+this module. Looking at `nftables::inet_filter` for inspiration might
+be a good idea.
+
+## Rules Validation
 
 Initially puppet deploys all configuration to
 `/etc/nftables/puppet-preflight/` and
@@ -56,13 +63,15 @@ Initially puppet deploys all configuration to
 If and only if successful the configuration will be copied to
 the real locations before the service is reloaded.
 
+## Basic types
+
 ### nftables::config
 
 Manages a raw file in `/etc/nftables/puppet/${name}.nft`
 
 Use this for any custom table files.
 
-## nftables::chain
+### nftables::chain
 
 Prepares a chain file as a `concat` file to which you will
 be able to add dedicated rules through `nftables::rule`.
@@ -76,7 +85,7 @@ and masterchain references the chain to hook in the new
 chain. It's possible to specify the in-interface name and
 out-interface name for the inject rule.
 
-## nftables::rule
+### nftables::rule
 
 A simple way to add rules to any chain. The name must be:
 `CHAIN_NAME-rulename`, where CHAIN_NAME refers to your
@@ -86,15 +95,50 @@ The rule will be a `concat::fragment` to the chain
 
 You can define the order by using the `order` param.
 
-## nftables::set
+Before defining your own rule, take a look to the list of ready-to-use rules
+available in the
+[REFERENCE](https://github.com/voxpupuli/puppet-nftables/blob/master/REFERENCE.md),
+somebody might have encapsulated a rule definition for you already.
+
+### nftables::set
 
 Adds a named set to a given table. It allows composing the
 set using individual parameters but also takes raw input
 via the content and source parameters.
 
-## nftables::simplerule
+### nftables::simplerule
 
 Allows expressing firewall rules without having to use nftables's language by
 adding an abstraction layer a-la-Firewall. It's rather limited how far you can
 go so if you need rather complex rules or you can speak nftables it's
 recommended to use `nftables::rule` directly.
+
+## Facts
+
+One structured fact `nftables` is available
+
+```
+{
+  tables => [
+    "bridge-filter",
+    "bridge-nat",
+    "inet-firewalld",
+    "ip-firewalld",
+    "ip6-firewalld"
+  ],
+  version => "0.9.3"
+}
+```
+
+* `nftables.version` is the version of the nft command from `nft --version`.
+* `nftables.tables` is the list of tables installed on the machine from `nft list tables`.
+
+## Editor goodies
+
+If you're using Emacs there are some snippets for
+[Yasnippet](https://github.com/joaotavora/yasnippet) available
+[here](https://github.com/nbarrientos/dotfiles/tree/master/.emacs.d/snippets/puppet-mode)
+that could make your life easier when using the module. This is third
+party configuration that's only included here for reference so changes
+in the interfaces exposed by this module are not guaranteed to be
+automatically applied there.

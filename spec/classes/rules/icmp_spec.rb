@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'nftables::rules::icmp' do
@@ -7,16 +9,18 @@ describe 'nftables::rules::icmp' do
 
       context 'default options' do
         it { is_expected.to compile }
+
         it {
-          is_expected.to contain_nftables__rule('default_in-accept_icmpv4').with(
+          expect(subject).to contain_nftables__rule('default_in-accept_icmpv4').with(
             content: 'ip protocol icmp accept',
-            order: '10',
+            order: '10'
           )
         }
+
         it {
-          is_expected.to contain_nftables__rule('default_in-accept_icmpv6').with(
+          expect(subject).to contain_nftables__rule('default_in-accept_icmpv6').with(
             content: 'ip6 nexthdr ipv6-icmp accept',
-            order: '10',
+            order: '10'
           )
         }
       end
@@ -29,22 +33,25 @@ describe 'nftables::rules::icmp' do
         end
 
         it { is_expected.to compile }
+
         it {
-          is_expected.to contain_nftables__rule('default_in-accept_icmpv4_echo_request').with(
+          expect(subject).to contain_nftables__rule('default_in-accept_icmpv4_echo_request').with(
             content: 'ip protocol icmp icmp type echo-request limit rate 4/second accept',
-            order: '10',
+            order: '10'
           )
         }
+
         it {
-          is_expected.to contain_nftables__rule('default_in-accept_icmpv4_echo_reply').with(
+          expect(subject).to contain_nftables__rule('default_in-accept_icmpv4_echo_reply').with(
             content: 'ip protocol icmp icmp type echo-reply accept',
-            order: '10',
+            order: '10'
           )
         }
+
         it {
-          is_expected.to contain_nftables__rule('default_in-accept_icmpv6').with(
+          expect(subject).to contain_nftables__rule('default_in-accept_icmpv6').with(
             content: 'ip6 nexthdr ipv6-icmp accept',
-            order: '10',
+            order: '10'
           )
         }
       end
@@ -53,33 +60,37 @@ describe 'nftables::rules::icmp' do
         let(:params) do
           {
             v4_types: ['echo-request limit rate 4/second', 'echo-reply'],
-            v6_types: ['echo-reply', 'nd-router-advert'],
+            v6_types: %w[echo-reply nd-router-advert],
           }
         end
 
         it { is_expected.to compile }
+
         it {
-          is_expected.to contain_nftables__rule('default_in-accept_icmpv4_echo_request').with(
+          expect(subject).to contain_nftables__rule('default_in-accept_icmpv4_echo_request').with(
             content: 'ip protocol icmp icmp type echo-request limit rate 4/second accept',
-            order: '10',
+            order: '10'
           )
         }
+
         it {
-          is_expected.to contain_nftables__rule('default_in-accept_icmpv4_echo_reply').with(
+          expect(subject).to contain_nftables__rule('default_in-accept_icmpv4_echo_reply').with(
             content: 'ip protocol icmp icmp type echo-reply accept',
-            order: '10',
+            order: '10'
           )
         }
+
         it {
-          is_expected.to contain_nftables__rule('default_in-accept_icmpv6_echo_reply').with(
+          expect(subject).to contain_nftables__rule('default_in-accept_icmpv6_echo_reply').with(
             content: 'ip6 nexthdr ipv6-icmp icmpv6 type echo-reply accept',
-            order: '10',
+            order: '10'
           )
         }
+
         it {
-          is_expected.to contain_nftables__rule('default_in-accept_icmpv6_nd_router_advert').with(
+          expect(subject).to contain_nftables__rule('default_in-accept_icmpv6_nd_router_advert').with(
             content: 'ip6 nexthdr ipv6-icmp icmpv6 type nd-router-advert accept',
-            order: '10',
+            order: '10'
           )
         }
       end

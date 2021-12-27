@@ -4,6 +4,124 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v2.1.0](https://github.com/voxpupuli/puppet-nftables/tree/v2.1.0) (2021-09-14)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nftables/compare/v2.0.0...v2.1.0)
+
+**Implemented enhancements:**
+
+- nftables::set can only be assigned to 1 table [\#100](https://github.com/voxpupuli/puppet-nftables/issues/100)
+- support a different table name for 'nat' [\#107](https://github.com/voxpupuli/puppet-nftables/pull/107) ([figless](https://github.com/figless))
+- Allow declaring the same set in several tables [\#102](https://github.com/voxpupuli/puppet-nftables/pull/102) ([nbarrientos](https://github.com/nbarrientos))
+
+**Fixed bugs:**
+
+- fix datatype for $table and $dport [\#104](https://github.com/voxpupuli/puppet-nftables/pull/104) ([bastelfreak](https://github.com/bastelfreak))
+
+**Merged pull requests:**
+
+- Allow stdlib 8.0.0 [\#106](https://github.com/voxpupuli/puppet-nftables/pull/106) ([smortex](https://github.com/smortex))
+- switch from camptocamp/systemd to voxpupuli/systemd [\#103](https://github.com/voxpupuli/puppet-nftables/pull/103) ([bastelfreak](https://github.com/bastelfreak))
+- pull fixtures from git and not forge [\#99](https://github.com/voxpupuli/puppet-nftables/pull/99) ([bastelfreak](https://github.com/bastelfreak))
+
+## [v2.0.0](https://github.com/voxpupuli/puppet-nftables/tree/v2.0.0) (2021-06-03)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nftables/compare/v1.3.0...v2.0.0)
+
+**Breaking changes:**
+
+- Drop Puppet 5, puppetlabs/concat 7.x, puppetlabs/stdlib 7.x, camptocamp/systemd: 3.x [\#92](https://github.com/voxpupuli/puppet-nftables/pull/92) ([traylenator](https://github.com/traylenator))
+- Drop Puppet 5 support [\#79](https://github.com/voxpupuli/puppet-nftables/pull/79) ([kenyon](https://github.com/kenyon))
+
+**Implemented enhancements:**
+
+- Ability to set base chains [\#95](https://github.com/voxpupuli/puppet-nftables/issues/95)
+- puppetlabs/concat: Allow 7.x [\#91](https://github.com/voxpupuli/puppet-nftables/pull/91) ([bastelfreak](https://github.com/bastelfreak))
+- puppetlabs/stdlib: Allow 7.x [\#90](https://github.com/voxpupuli/puppet-nftables/pull/90) ([bastelfreak](https://github.com/bastelfreak))
+- camptocamp/systemd: allow 3.x [\#89](https://github.com/voxpupuli/puppet-nftables/pull/89) ([bastelfreak](https://github.com/bastelfreak))
+
+**Fixed bugs:**
+
+- Fix IPv4 source address type detection [\#93](https://github.com/voxpupuli/puppet-nftables/pull/93) ([nbarrientos](https://github.com/nbarrientos))
+
+**Closed issues:**
+
+- Class\[Nftables::Bridges\]\['bridgenames'\] contains a Regexp value. It will be converted to the String '/^br.+/' [\#83](https://github.com/voxpupuli/puppet-nftables/issues/83)
+
+**Merged pull requests:**
+
+- Allow creating a totally empty firewall [\#96](https://github.com/voxpupuli/puppet-nftables/pull/96) ([nbarrientos](https://github.com/nbarrientos))
+- Amend link to Yasnippets [\#88](https://github.com/voxpupuli/puppet-nftables/pull/88) ([nbarrientos](https://github.com/nbarrientos))
+
+## [v1.3.0](https://github.com/voxpupuli/puppet-nftables/tree/v1.3.0) (2021-03-25)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nftables/compare/v1.2.0...v1.3.0)
+
+**Implemented enhancements:**
+
+- Add rules for QEMU/libvirt guests \(bridged virtual networking\) [\#85](https://github.com/voxpupuli/puppet-nftables/pull/85) ([nbarrientos](https://github.com/nbarrientos))
+- Add nftables.version to structured fact. [\#84](https://github.com/voxpupuli/puppet-nftables/pull/84) ([traylenator](https://github.com/traylenator))
+- Add rules for Apache ActiveMQ [\#82](https://github.com/voxpupuli/puppet-nftables/pull/82) ([nbarrientos](https://github.com/nbarrientos))
+- Add Docker-CE default rules [\#80](https://github.com/voxpupuli/puppet-nftables/pull/80) ([luisfdez](https://github.com/luisfdez))
+
+**Closed issues:**
+
+- Increase puppetlabs/concat version in metadata [\#78](https://github.com/voxpupuli/puppet-nftables/issues/78)
+
+**Merged pull requests:**
+
+- Fix sections and add a pointer to code snippets for Emacs [\#81](https://github.com/voxpupuli/puppet-nftables/pull/81) ([nbarrientos](https://github.com/nbarrientos))
+
+## [v1.2.0](https://github.com/voxpupuli/puppet-nftables/tree/v1.2.0) (2021-03-03)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nftables/compare/v1.1.1...v1.2.0)
+
+**Implemented enhancements:**
+
+- start declaring the 'global' chain with module resources [\#73](https://github.com/voxpupuli/puppet-nftables/pull/73) ([lelutin](https://github.com/lelutin))
+
+**Fixed bugs:**
+
+- nftables service is broken after reboot [\#74](https://github.com/voxpupuli/puppet-nftables/issues/74)
+- fix \#74 - ensure table are initialized before flushing them [\#75](https://github.com/voxpupuli/puppet-nftables/pull/75) ([duritong](https://github.com/duritong))
+
+## [v1.1.1](https://github.com/voxpupuli/puppet-nftables/tree/v1.1.1) (2021-01-29)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nftables/compare/v1.1.0...v1.1.1)
+
+**Fixed bugs:**
+
+- Simplerule: wrong IP protocol version filter statement for IPv6 traffic [\#69](https://github.com/voxpupuli/puppet-nftables/issues/69)
+- Fix IP version filter for IPv6 traffic [\#70](https://github.com/voxpupuli/puppet-nftables/pull/70) ([nbarrientos](https://github.com/nbarrientos))
+
+**Merged pull requests:**
+
+- Improve nftables::rule's documentation [\#68](https://github.com/voxpupuli/puppet-nftables/pull/68) ([nbarrientos](https://github.com/nbarrientos))
+
+## [v1.1.0](https://github.com/voxpupuli/puppet-nftables/tree/v1.1.0) (2021-01-25)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nftables/compare/v1.0.0...v1.1.0)
+
+**Implemented enhancements:**
+
+- Enable parameter\_documentation lint [\#64](https://github.com/voxpupuli/puppet-nftables/pull/64) ([traylenator](https://github.com/traylenator))
+- Add Samba in rules [\#62](https://github.com/voxpupuli/puppet-nftables/pull/62) ([glpatcern](https://github.com/glpatcern))
+- Add some mail related outgoing rules [\#60](https://github.com/voxpupuli/puppet-nftables/pull/60) ([duritong](https://github.com/duritong))
+
+**Fixed bugs:**
+
+- nftables::simplerule should follow the same rules as nftables::rule [\#58](https://github.com/voxpupuli/puppet-nftables/issues/58)
+- Align simplerule and rule rulename requirements [\#59](https://github.com/voxpupuli/puppet-nftables/pull/59) ([nbarrientos](https://github.com/nbarrientos))
+
+**Closed issues:**
+
+- Get it under the voxpupuli umbrella [\#35](https://github.com/voxpupuli/puppet-nftables/issues/35)
+
+**Merged pull requests:**
+
+- Add badges to README [\#63](https://github.com/voxpupuli/puppet-nftables/pull/63) ([traylenator](https://github.com/traylenator))
+- Check that all the predefined rules are declared in the all rules acceptance test [\#53](https://github.com/voxpupuli/puppet-nftables/pull/53) ([nbarrientos](https://github.com/nbarrientos))
+
 ## [v1.0.0](https://github.com/voxpupuli/puppet-nftables/tree/v1.0.0) (2020-12-15)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nftables/compare/0ba57c66a35ed4e9b570d8a6315a33a1c4ba3181...v1.0.0)
@@ -65,6 +183,7 @@ These should not affect the functionality of the module.
 
 - Docs for nftables::set [\#55](https://github.com/voxpupuli/puppet-nftables/pull/55) ([traylenator](https://github.com/traylenator))
 - Remove a blank separating the doc string and the code [\#52](https://github.com/voxpupuli/puppet-nftables/pull/52) ([nbarrientos](https://github.com/nbarrientos))
+- Release 1.0.0 [\#49](https://github.com/voxpupuli/puppet-nftables/pull/49) ([traylenator](https://github.com/traylenator))
 - Correct layout of ignore table example [\#44](https://github.com/voxpupuli/puppet-nftables/pull/44) ([traylenator](https://github.com/traylenator))
 - Fix typos and formatting in the README [\#43](https://github.com/voxpupuli/puppet-nftables/pull/43) ([nbarrientos](https://github.com/nbarrientos))
 - Comment why firewalld\_enable parameter is required [\#40](https://github.com/voxpupuli/puppet-nftables/pull/40) ([traylenator](https://github.com/traylenator))

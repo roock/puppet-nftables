@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'nftables class' do
@@ -37,6 +39,9 @@ describe 'nftables class' do
       include nftables::rules::smtp
       include nftables::rules::ceph
       include nftables::rules::samba
+      include nftables::rules::activemq
+      include nftables::rules::docker_ce
+      include nftables::rules::qemu
       include nftables::rules::out::postgres
       include nftables::rules::out::icmp
       include nftables::rules::out::dns
@@ -60,11 +65,19 @@ describe 'nftables class' do
       include nftables::rules::out::dhcp
       include nftables::rules::out::nfs
       include nftables::rules::out::smtp
+      include nftables::rules::out::smtp_client
+      include nftables::rules::out::imap
+      include nftables::rules::out::pop3
       include nftables::rules::out::chrony
       include nftables::rules::out::wireguard
       include nftables::rules::wireguard
       include nftables::services::dhcpv6_client
       include nftables::services::openafs_client
+      nftables::set{'my_test_set':
+        type       => 'ipv4_addr',
+        elements   => ['192.168.0.1', '10.0.0.2'],
+        table      => ['inet-filter', 'ip-nat'],
+      }
       # nftables cannot be started in docker so replace service with a validation only.
       systemd::dropin_file{"zzz_docker_nft.conf":
         ensure  => present,
@@ -79,8 +92,6 @@ describe 'nftables class' do
           ].join("\n"),
         notify  => Service["nftables"],
       }
-      # Puppet 5 only to ensure ordering.
-      Class['systemd::systemctl::daemon_reload'] -> Service['nftables']
       EOS
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -96,11 +107,7 @@ describe 'nftables class' do
       it { is_expected.to be_enabled }
     end
 
-    describe file('/etc/nftables/puppet.nft') do
-      it { is_expected.to be_file }
-    end
-
-    describe file('/etc/systemd/system/nftables.service.d/puppet_nft.conf') do
+    describe file('/etc/nftables/puppet.nft', '/etc/systemd/system/nftables.service.d/puppet_nft.conf') do
       it { is_expected.to be_file }
     end
 

@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'nftables::rules::dnat4' do
   let(:title) { 'foobar' }
+  let(:pre_condition) { 'include nftables' }
 
   on_supported_os.each do |os, facts|
     context "on #{os}" do

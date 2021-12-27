@@ -10,12 +10,14 @@
 * [`nftables::bridges`](#nftablesbridges): allow forwarding traffic on bridges
 * [`nftables::inet_filter`](#nftablesinet_filter): manage basic chains in table inet filter
 * [`nftables::ip_nat`](#nftablesip_nat): manage basic chains in table ip nat
+* [`nftables::rules::activemq`](#nftablesrulesactivemq): Provides input rules for Apache ActiveMQ
 * [`nftables::rules::afs3_callback`](#nftablesrulesafs3_callback): Open call back port for AFS clients
 * [`nftables::rules::ceph`](#nftablesrulesceph): Ceph is a distributed object store and file system. Enable this to support Ceph's Object Storage Daemons (OSD), Metadata Server Daemons (MDS)
 * [`nftables::rules::ceph_mon`](#nftablesrulesceph_mon): Ceph is a distributed object store and file system.
 Enable this option to support Ceph's Monitor Daemon.
 * [`nftables::rules::dhcpv6_client`](#nftablesrulesdhcpv6_client): allow DHCPv6 requests in to a host
 * [`nftables::rules::dns`](#nftablesrulesdns): manage in dns
+* [`nftables::rules::docker_ce`](#nftablesrulesdocker_ce): Default firewall configuration for Docker-CE
 * [`nftables::rules::http`](#nftablesruleshttp): manage in http
 * [`nftables::rules::https`](#nftablesruleshttps): manage in https
 * [`nftables::rules::icinga2`](#nftablesrulesicinga2): manage in icinga2
@@ -37,6 +39,7 @@ and Manager Daemons (MGR).
 * [`nftables::rules::out::http`](#nftablesrulesouthttp): manage out http
 * [`nftables::rules::out::https`](#nftablesrulesouthttps): manage out https
 * [`nftables::rules::out::icmp`](#nftablesrulesouticmp): control outbound icmp packages
+* [`nftables::rules::out::imap`](#nftablesrulesoutimap): allow outgoing imap
 * [`nftables::rules::out::kerberos`](#nftablesrulesoutkerberos): allows outbound access for kerberos
 * [`nftables::rules::out::mysql`](#nftablesrulesoutmysql): manage out mysql
 * [`nftables::rules::out::nfs`](#nftablesrulesoutnfs): manage out nfs
@@ -47,14 +50,18 @@ and Manager Daemons (MGR).
 7003 - vlserver
 * [`nftables::rules::out::ospf`](#nftablesrulesoutospf): manage out ospf
 * [`nftables::rules::out::ospf3`](#nftablesrulesoutospf3): manage out ospf3
+* [`nftables::rules::out::pop3`](#nftablesrulesoutpop3): allow outgoing pop3
 * [`nftables::rules::out::postgres`](#nftablesrulesoutpostgres): manage out postgres
 * [`nftables::rules::out::puppet`](#nftablesrulesoutpuppet): manage outgoing puppet
-* [`nftables::rules::out::smtp`](#nftablesrulesoutsmtp): manage out smtp
+* [`nftables::rules::out::smtp`](#nftablesrulesoutsmtp): allow outgoing smtp
+* [`nftables::rules::out::smtp_client`](#nftablesrulesoutsmtp_client): allow outgoing smtp client
 * [`nftables::rules::out::ssh`](#nftablesrulesoutssh): manage out ssh
 * [`nftables::rules::out::ssh::remove`](#nftablesrulesoutsshremove): disable outgoing ssh
 * [`nftables::rules::out::tor`](#nftablesrulesouttor): manage out tor
 * [`nftables::rules::out::wireguard`](#nftablesrulesoutwireguard): manage out wireguard
 * [`nftables::rules::puppet`](#nftablesrulespuppet): manage in puppet
+* [`nftables::rules::qemu`](#nftablesrulesqemu): Bridged network configuration for qemu/libvirt
+* [`nftables::rules::samba`](#nftablesrulessamba): manage Samba, the suite to allow Windows file sharing on Linux resources.
 * [`nftables::rules::smtp`](#nftablesrulessmtp): manage in smtp
 * [`nftables::rules::smtp_submission`](#nftablesrulessmtp_submission): manage in smtp submission
 * [`nftables::rules::smtps`](#nftablesrulessmtps): manage in smtps
@@ -68,7 +75,7 @@ and Manager Daemons (MGR).
 
 * [`nftables::chain`](#nftableschain): manage a chain
 * [`nftables::config`](#nftablesconfig): manage a config snippet
-* [`nftables::rule`](#nftablesrule): manage a chain rule Name should be:   CHAIN_NAME-rulename
+* [`nftables::rule`](#nftablesrule): Provides an interface to create a firewall rule
 * [`nftables::rules::dnat4`](#nftablesrulesdnat4): manage a ipv4 dnat rule
 * [`nftables::rules::masquerade`](#nftablesrulesmasquerade): masquerade all outgoing traffic
 * [`nftables::rules::snat4`](#nftablesrulessnat4): manage a ipv4 snat rule
@@ -124,7 +131,9 @@ The following parameters are available in the `nftables` class:
 * [`out_icmp`](#out_icmp)
 * [`in_ssh`](#in_ssh)
 * [`in_icmp`](#in_icmp)
+* [`inet_filter`](#inet_filter)
 * [`nat`](#nat)
+* [`nat_table_name`](#nat_table_name)
 * [`sets`](#sets)
 * [`log_prefix`](#log_prefix)
 * [`log_limit`](#log_limit)
@@ -201,6 +210,14 @@ Allow inbound ICMPv4/v6 traffic.
 
 Default value: ``true``
 
+##### <a name="inet_filter"></a>`inet_filter`
+
+Data type: `Boolean`
+
+Add default tables, chains and rules to process traffic.
+
+Default value: ``true``
+
 ##### <a name="nat"></a>`nat`
 
 Data type: `Boolean`
@@ -208,6 +225,14 @@ Data type: `Boolean`
 Add default tables and chains to process NAT traffic.
 
 Default value: ``true``
+
+##### <a name="nat_table_name"></a>`nat_table_name`
+
+Data type: `String[1]`
+
+The name of the 'nat' table.
+
+Default value: `'nat'`
 
 ##### <a name="sets"></a>`sets`
 
@@ -329,6 +354,42 @@ manage basic chains in table inet filter
 
 manage basic chains in table ip nat
 
+### <a name="nftablesrulesactivemq"></a>`nftables::rules::activemq`
+
+Provides input rules for Apache ActiveMQ
+
+#### Parameters
+
+The following parameters are available in the `nftables::rules::activemq` class:
+
+* [`tcp`](#tcp)
+* [`udp`](#udp)
+* [`port`](#port)
+
+##### <a name="tcp"></a>`tcp`
+
+Data type: `Boolean`
+
+Create the rule for TCP traffic.
+
+Default value: ``true``
+
+##### <a name="udp"></a>`udp`
+
+Data type: `Boolean`
+
+Create the rule for UDP traffic.
+
+Default value: ``true``
+
+##### <a name="port"></a>`port`
+
+Data type: `Stdlib::Port`
+
+The port number for the ActiveMQ daemon.
+
+Default value: `61616`
+
 ### <a name="nftablesrulesafs3_callback"></a>`nftables::rules::afs3_callback`
 
 Open call back port for AFS clients
@@ -403,6 +464,57 @@ Data type: `Array[Stdlib::Port,1]`
 Specify ports for dns.
 
 Default value: `[53]`
+
+### <a name="nftablesrulesdocker_ce"></a>`nftables::rules::docker_ce`
+
+The configuration distributed in this class represents the default firewall
+configuration done by docker-ce when the iptables integration is enabled.
+
+This class is needed as the default docker-ce rules added to ip-filter conflict
+with the inet-filter forward rules set by default in this module.
+
+When using this class 'docker::iptables: false' should be set.
+
+#### Parameters
+
+The following parameters are available in the `nftables::rules::docker_ce` class:
+
+* [`docker_interface`](#docker_interface)
+* [`docker_prefix`](#docker_prefix)
+* [`manage_docker_chains`](#manage_docker_chains)
+* [`manage_base_chains`](#manage_base_chains)
+
+##### <a name="docker_interface"></a>`docker_interface`
+
+Data type: `String[1]`
+
+Interface name used by docker.
+
+Default value: `'docker0'`
+
+##### <a name="docker_prefix"></a>`docker_prefix`
+
+Data type: `Stdlib::IP::Address::V4::CIDR`
+
+The address space used by docker.
+
+Default value: `'172.17.0.0/16'`
+
+##### <a name="manage_docker_chains"></a>`manage_docker_chains`
+
+Data type: `Boolean`
+
+Flag to control whether the class should create the docker related chains.
+
+Default value: ``true``
+
+##### <a name="manage_base_chains"></a>`manage_base_chains`
+
+Data type: `Boolean`
+
+Flag to control whether the class should create the base common chains.
+
+Default value: ``true``
 
 ### <a name="nftablesruleshttp"></a>`nftables::rules::http`
 
@@ -608,6 +720,10 @@ Data type: `String`
 
 Default value: `'10'`
 
+### <a name="nftablesrulesoutimap"></a>`nftables::rules::out::imap`
+
+allow outgoing imap
+
 ### <a name="nftablesrulesoutkerberos"></a>`nftables::rules::out::kerberos`
 
 allows outbound access for kerberos
@@ -657,6 +773,10 @@ manage out ospf
 
 manage out ospf3
 
+### <a name="nftablesrulesoutpop3"></a>`nftables::rules::out::pop3`
+
+allow outgoing pop3
+
 ### <a name="nftablesrulesoutpostgres"></a>`nftables::rules::out::postgres`
 
 manage out postgres
@@ -688,7 +808,11 @@ Default value: `8140`
 
 ### <a name="nftablesrulesoutsmtp"></a>`nftables::rules::out::smtp`
 
-manage out smtp
+allow outgoing smtp
+
+### <a name="nftablesrulesoutsmtp_client"></a>`nftables::rules::out::smtp_client`
+
+allow outgoing smtp client
 
 ### <a name="nftablesrulesoutssh"></a>`nftables::rules::out::ssh`
 
@@ -737,6 +861,112 @@ Data type: `Array[Integer,1]`
 puppet server ports
 
 Default value: `[8140]`
+
+### <a name="nftablesrulesqemu"></a>`nftables::rules::qemu`
+
+This class configures the typical firewall setup that libvirt
+creates. Depending on your requirements you can switch on and off
+several aspects, for instance if you don't do DHCP to your guests
+you can disable the rules that accept DHCP traffic on the host or if
+you don't want your guests to talk to hosts outside you can disable
+forwarding and/or masquerading for IPv4 traffic.
+
+#### Parameters
+
+The following parameters are available in the `nftables::rules::qemu` class:
+
+* [`interface`](#interface)
+* [`network_v4`](#network_v4)
+* [`network_v6`](#network_v6)
+* [`dns`](#dns)
+* [`dhcpv4`](#dhcpv4)
+* [`forward_traffic`](#forward_traffic)
+* [`internal_traffic`](#internal_traffic)
+* [`masquerade`](#masquerade)
+
+##### <a name="interface"></a>`interface`
+
+Data type: `String[1]`
+
+Interface name used by the bridge.
+
+Default value: `'virbr0'`
+
+##### <a name="network_v4"></a>`network_v4`
+
+Data type: `Stdlib::IP::Address::V4::CIDR`
+
+The IPv4 network prefix used in the virtual network.
+
+Default value: `'192.168.122.0/24'`
+
+##### <a name="network_v6"></a>`network_v6`
+
+Data type: `Optional[Stdlib::IP::Address::V6::CIDR]`
+
+The IPv6 network prefix used in the virtual network.
+
+Default value: ``undef``
+
+##### <a name="dns"></a>`dns`
+
+Data type: `Boolean`
+
+Allow DNS traffic from the guests to the host.
+
+Default value: ``true``
+
+##### <a name="dhcpv4"></a>`dhcpv4`
+
+Data type: `Boolean`
+
+Allow DHCPv4 traffic from the guests to the host.
+
+Default value: ``true``
+
+##### <a name="forward_traffic"></a>`forward_traffic`
+
+Data type: `Boolean`
+
+Allow forwarded traffic (out all, in related/established)
+generated by the virtual network.
+
+Default value: ``true``
+
+##### <a name="internal_traffic"></a>`internal_traffic`
+
+Data type: `Boolean`
+
+Allow guests in the virtual network to talk to each other.
+
+Default value: ``true``
+
+##### <a name="masquerade"></a>`masquerade`
+
+Data type: `Boolean`
+
+Do NAT masquerade on all IPv4 traffic generated by guests
+to external networks.
+
+Default value: ``true``
+
+### <a name="nftablesrulessamba"></a>`nftables::rules::samba`
+
+manage Samba, the suite to allow Windows file sharing on Linux resources.
+
+#### Parameters
+
+The following parameters are available in the `nftables::rules::samba` class:
+
+* [`ctdb`](#ctdb)
+
+##### <a name="ctdb"></a>`ctdb`
+
+Data type: `Boolean`
+
+Enable ctdb-driven clustered Samba setups.
+
+Default value: ``false``
 
 ### <a name="nftablesrulessmtp"></a>`nftables::rules::smtp`
 
@@ -915,9 +1145,28 @@ Default value: `'custom-'`
 
 ### <a name="nftablesrule"></a>`nftables::rule`
 
-manage a chain rule
-Name should be:
-  CHAIN_NAME-rulename
+Provides an interface to create a firewall rule
+
+#### Examples
+
+##### add a rule named 'myhttp' to the 'default_in' chain to allow incoming traffic to TCP port 80
+
+```puppet
+nftables::rule {
+  'default_in-myhttp':
+    content => 'tcp dport 80 accept',
+}
+```
+
+##### add a rule named 'count' to the 'PREROUTING6' chain in table 'ip6 nat' to count traffic
+
+```puppet
+nftables::rule {
+  'PREROUTING6-count':
+    content => 'counter',
+    table   => 'ip6-nat'
+}
+```
 
 #### Parameters
 
@@ -934,7 +1183,7 @@ The following parameters are available in the `nftables::rule` defined type:
 
 Data type: `Enum['present','absent']`
 
-
+Should the rule be created.
 
 Default value: `'present'`
 
@@ -942,7 +1191,8 @@ Default value: `'present'`
 
 Data type: `Nftables::RuleName`
 
-
+The symbolic name for the rule and to what chain to add it. The
+format is defined by the Nftables::RuleName type.
 
 Default value: `$title`
 
@@ -950,15 +1200,15 @@ Default value: `$title`
 
 Data type: `Pattern[/^\d\d$/]`
 
-
+A number representing the order of the rule.
 
 Default value: `'50'`
 
 ##### <a name="table"></a>`table`
 
-Data type: `Optional[String]`
+Data type: `String`
 
-
+The name of the table to add this rule to.
 
 Default value: `'inet-filter'`
 
@@ -966,7 +1216,8 @@ Default value: `'inet-filter'`
 
 Data type: `Optional[String]`
 
-
+The raw statements that compose the rule represented using the nftables
+language.
 
 Default value: ``undef``
 
@@ -974,7 +1225,7 @@ Default value: ``undef``
 
 Data type: `Optional[Variant[String,Array[String,1]]]`
 
-
+Same goal as content but sourcing the value from a file.
 
 Default value: ``undef``
 
@@ -1054,7 +1305,7 @@ Data type: `Optional[Variant[String,Stdlib::Port]]`
 
 
 
-Default value: `''`
+Default value: ``undef``
 
 ##### <a name="ensure"></a>`ensure`
 
@@ -1312,9 +1563,9 @@ Default value: ``undef``
 
 ##### <a name="table"></a>`table`
 
-Data type: `String`
+Data type: `Variant[String, Array[String, 1]]`
 
-table to add set to.
+table or array of tables to add the set to.
 
 Default value: `'inet-filter'`
 
