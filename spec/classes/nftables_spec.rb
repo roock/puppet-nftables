@@ -101,19 +101,6 @@ describe 'nftables' do
         }
       end
 
-      it {
-        expect(subject).to contain_systemd__dropin_file('puppet_nft.conf').with(
-          content: %r{^ExecReload=/sbin/nft -I /etc/nftables/puppet -f /etc/sysconfig/nftables.conf$}
-        )
-      }
-
-      it {
-        expect(subject).to contain_service('firewalld').with(
-          ensure: 'stopped',
-          enable: 'mask'
-        )
-      }
-
       it { is_expected.to contain_class('nftables::inet_filter') }
       it { is_expected.to contain_class('nftables::ip_nat') }
       it { is_expected.to contain_class('nftables::rules::out::http') }
