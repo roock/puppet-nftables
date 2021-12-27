@@ -73,7 +73,6 @@ describe 'nftables' do
         )
       }
 
-<<<<<<< HEAD
       if os_facts[:os]['family'] == 'Debian'
         it {
           is_expected.to contain_systemd__dropin_file('puppet_nft.conf').with(
@@ -102,7 +101,6 @@ describe 'nftables' do
         }
       end
 
-=======
       it {
         expect(subject).to contain_systemd__dropin_file('puppet_nft.conf').with(
           content: %r{^ExecReload=/sbin/nft -I /etc/nftables/puppet -f /etc/sysconfig/nftables.conf$}
@@ -118,7 +116,6 @@ describe 'nftables' do
 
       it { is_expected.to contain_class('nftables::inet_filter') }
       it { is_expected.to contain_class('nftables::ip_nat') }
->>>>>>> upstream/master
       it { is_expected.to contain_class('nftables::rules::out::http') }
       it { is_expected.to contain_class('nftables::rules::out::https') }
       it { is_expected.to contain_class('nftables::rules::out::dns') }
