@@ -64,16 +64,15 @@ describe 'nftables' do
         )
       }
 
-      it {
-        expect(subject).to contain_service('nftables').with(
-          ensure: 'running',
-          enable: true,
-          hasrestart: true,
-          restart: %r{/usr/bin/systemctl reload nft.*}
-        )
-      }
-
       if os_facts[:os]['family'] == 'Debian'
+        it {
+          expect(subject).to contain_service('nftables').with(
+            ensure: 'running',
+            enable: true,
+            hasrestart: true,
+            restart: %r{/bin/systemctl reload nft.*}
+          )
+        }
         it {
           is_expected.to contain_systemd__dropin_file('puppet_nft.conf').with(
             content: %r{^ExecReload=/usr/sbin/nft -I /etc/nftables/puppet -f /etc/nftables.conf$}
@@ -87,6 +86,14 @@ describe 'nftables' do
           )
         }
       else
+        it {
+          expect(subject).to contain_service('nftables').with(
+            ensure: 'running',
+            enable: true,
+            hasrestart: true,
+            restart: %r{/usr/bin/systemctl reload nft.*}
+          )
+        }
         it {
           is_expected.to contain_systemd__dropin_file('puppet_nft.conf').with(
             content: %r{^ExecReload=/usr/sbin/nft -I /etc/nftables/puppet -f /etc/sysconfig/nftables.conf$}
