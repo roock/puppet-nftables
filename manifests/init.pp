@@ -113,6 +113,12 @@ class nftables (
   Optional[Array[Pattern[/^(ip|ip6|inet)-[-a-zA-Z0-9_]+$/],1]] $noflush_tables = undef,
   Stdlib::Unixpath $configuration_path,
 ) {
+
+  $restart_cmd = $facts['os']['family'] ? {
+    /(Debian|Ubuntu)/ => '/bin/systemctl reload nftables',
+    default           => '/usr/bin/systemctl reload nftables',
+  }
+
   package { 'nftables':
     ensure => installed,
   } -> file_line {
@@ -169,7 +175,7 @@ class nftables (
     ensure     => running,
     enable     => true,
     hasrestart => true,
-    restart    => '/usr/bin/systemctl reload nftables',
+    restart    => $restart_cmd
   }
 
   $puppet_nft_vars = {
