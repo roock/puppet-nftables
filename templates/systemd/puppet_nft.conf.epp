@@ -1,0 +1,7 @@
+# Puppet Deployed
+[Service]
+ExecStart=
+ExecStart=/usr/sbin/nft -I /etc/nftables/puppet -f <%= $configuration_path %>
+ExecReload=
+ExecReload=/usr/sbin/nft -I /etc/nftables/puppet -f <%= $configuration_path %>
+
